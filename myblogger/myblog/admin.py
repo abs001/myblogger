@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import SiteConfiguration, Blog
 
-# Register your models here.
+admin.site.register(SiteConfiguration)
+admin.site.register(Blog)

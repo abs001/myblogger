@@ -46,10 +46,14 @@
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li><a href="/" class="active">Blog Entries</a></li>
-                            <li><a href="/login">Login</a></li>
-                            <li><a href="/logout">Logout</a></li>
-                            <li><a href="/register">Register</a></li>
+                            <li><a href="/" class="active">Home</a></li>
+                            {% if user.username %}
+                                <li><a href="/" class="active"> {{ user.username }}'s blogs</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            {% else %}
+                                <li><a href="/login">Login</a></li>
+                                <li><a href="/register">Register</a></li>
+                            {% endif %}
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>

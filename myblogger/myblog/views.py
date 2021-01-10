@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import Register, LoginUser
 from django.contrib import messages
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate, login, logout
 
 
 def index(request):
@@ -29,6 +29,7 @@ def login_user(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password)
             if user is not None and user.is_active:
+                login(request, user)
                 messages.add_message(request, messages.INFO, "Logged in successfully")
                 return redirect('/')
             else:
@@ -38,7 +39,3 @@ def login_user(request):
         form = LoginUser()
     return render(request, "myblog/login.html", {"login_form": form})
 
-
-def logout_user(request):
-    messages.add_message(request, messages.INFO, "Successfully logged out")
-    logout(request)

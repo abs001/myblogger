@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import Register, LoginUser
+from .forms import Register, LoginUser, NewBlog
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
@@ -39,3 +39,14 @@ def login_user(request):
         form = LoginUser()
     return render(request, "myblog/login.html", {"login_form": form})
 
+
+def new_blog(request):
+    if request.method == "POST":
+        form = NewBlog(request.POST)
+        if form.is_valid():
+            blog_title = form.cleaned_data.get('blog_title')
+            blog_description = form.cleaned_data.get('blog_description')
+            form.save()
+    else:
+        form = NewBlog()
+    return render(request, "myblog/new_blog.html", {"new_blog": form})

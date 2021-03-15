@@ -48,7 +48,8 @@
                         <ul class="nav">
                             <li><a href="/" class="active">Home</a></li>
                             {% if user.username %}
-                                <li><a href="/" class="active"> {{ user.username }}'s blogs</a></li>
+                            <li><a href="/new_blog" class="active"> New blog</a></li>
+                            <li><a href="/" class="active"> {{ user.username }}'s blogs</a></li>
                                 <li><a href="/logout">Logout</a></li>
                             {% else %}
                                 <li><a href="/login">Login</a></li>

@@ -14,3 +14,12 @@ class LoginUser(forms.Form):
         attrs={"class": "form-control", "placeholder": "Enter your Username"}))
     password1 = forms.CharField(label="Password", max_length=150, widget=forms.PasswordInput(
         attrs={"class": "form-control", "placeholder": "Enter your Password"}))
+
+
+class NewBlog(forms.Form):
+    blog_title = forms.CharField(label="Form Title", max_length=250, widget=forms.TextInput(
+        attrs={"class": "form-control", "placeholder": "Enter title here"}
+    ))
+    blog_description = forms.CharField(label="Blog Description", widget=forms.Textarea(
+        attrs={"class": "form-control", "placeholder": "Enter blog Description"}
+    ))

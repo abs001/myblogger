@@ -8,8 +8,9 @@ from .models import Blog
 
 
 def index(request):
-    context = {}
-    return render(request, 'myblog/home.html', context)
+    blog_data = {"blog_data": Blog.objects.all().values()}
+    return render(request, 'myblog/home.html', blog_data)
+
 
 
 def register(request):

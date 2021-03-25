@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 from .forms import Register, LoginUser, NewBlog
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from .models import Blog
 
 
 def index(request):
@@ -44,9 +47,14 @@ def new_blog(request):
     if request.method == "POST":
         form = NewBlog(request.POST)
         if form.is_valid():
-            blog_title = form.cleaned_data.get('blog_title')
-            blog_description = form.cleaned_data.get('blog_description')
-            form.save()
+            blog_object = Blog()
+            blog_object.blog_title = form.cleaned_data.get('blog_title')
+            blog_object.blog_description = form.cleaned_data.get('blog_description')
+            blog_object.blog_user_id = request.user
+            blog_object.creation_date = datetime.now()
+            blog_object.last_modified = datetime.now()
+            blog_object.save()
+            messages.success(request, "New blog created")
     else:
         form = NewBlog()
     return render(request, "myblog/new_blog.html", {"new_blog": form})

@@ -8,9 +8,8 @@ from .models import Blog
 
 
 def index(request):
-    blog_data = {"blog_data": Blog.objects.all().values()}
+    blog_data = {"blog_data": Blog.objects.all().order_by('-last_modified')}
     return render(request, 'myblog/home.html', blog_data)
-
 
 
 def register(request):
@@ -54,6 +53,7 @@ def new_blog(request):
             blog_object.blog_user_id = request.user
             blog_object.creation_date = datetime.now()
             blog_object.last_modified = datetime.now()
+            blog_object.user_name = request.user
             blog_object.save()
             messages.success(request, "New blog created")
     else:

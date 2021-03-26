@@ -18,3 +18,5 @@ class Blog(models.Model):
     blog_user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
     creation_date = models.DateTimeField()
     last_modified = models.DateTimeField()
+    views = models.IntegerField(default=0)
+    user_name = models.TextField(default="Admin")

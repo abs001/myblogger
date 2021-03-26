@@ -26,13 +26,18 @@
                             <img src="{% static 'myblog/images/blog-item-01.png' %}" alt="">
                         </div>
                         <div class="blog-content">
-                            <h3>
-                                <a href="#">{{ blog.blog_title }}</a>
+                            <h3 class="text text-left">
+                                <a href="#">{{ blog.blog_title|title }}</a>
                             </h3>
-                            <div class="text">
-                               {{ blog.blog_description }}
+                            <div class="text text-justify">
+                               {{ blog.blog_description|truncatechars:150 }}<br>
+                                <a href="#" class="text-info">Read More</a>
                             </div>
-                            <a href="#" class="main-button">Read More</a>
+                            <div class="text text-justify">
+                                <span class="text text-primary">{{ blog.user_name|title }}</span> |
+                                <span class="text text-warning">{{ blog.last_modified}}</span> |
+                                <span><i class="fa fa-eye" aria-hidden="true"></i> {{ blog.views }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

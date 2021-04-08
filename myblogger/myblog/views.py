@@ -12,6 +12,11 @@ def index(request):
     return render(request, 'myblog/home.html', blog_data)
 
 
+def profile(request, username=None):
+    blog_data = {"blog_data": Blog.objects.filter(user_name=username)}
+    return render(request, 'myblog/home.html', blog_data)
+
+
 def register(request):
     if request.method == "POST":
         form = Register(request.POST)

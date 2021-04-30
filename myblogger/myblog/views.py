@@ -64,3 +64,26 @@ def new_blog(request):
     else:
         form = NewBlog()
     return render(request, "myblog/new_blog.html", {"new_blog": form})
+
+
+def blog(request, blog_id):
+    if request.method == "POST":
+        form = NewBlog(request.POST)
+        if form.is_valid():
+            blog_object = Blog.objects.get(pk=blog_id)
+            blog_object.blog_title = form.cleaned_data.get('blog_title')
+            blog_object.blog_description = form.cleaned_data.get('blog_description')
+            blog_object.blog_user_id = request.user
+            blog_object.last_modified = datetime.now()
+            blog_object.save()
+            messages.success(request, "Blog updated successfully")
+    else:
+        current_blog = Blog.objects.get(pk=blog_id)
+        init_dict = {
+            "blog_title": current_blog.blog_title,
+            "blog_description": current_blog.blog_description,
+            "last_modified": current_blog.last_modified
+        }
+        form = NewBlog(initial=init_dict)
+
+    return render(request, "myblog/blog.html", {"new_blog": form})

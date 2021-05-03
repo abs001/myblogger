@@ -5,11 +5,14 @@ from .forms import Register, LoginUser, NewBlog
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import Blog
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
-    blog_data = {"blog_data": Blog.objects.all().order_by('-last_modified')}
-    return render(request, 'myblog/home.html', blog_data)
+    blog_data = Blog.objects.all()
+    paginator_object = Paginator(blog_data, 6)
+    page_data = paginator_object.get_page(request.GET.get('page', 1))
+    return render(request, 'myblog/home.html', {"page_data": page_data})
 
 
 def profile(request, username=None):

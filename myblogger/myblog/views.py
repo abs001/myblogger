@@ -53,7 +53,7 @@ def login_user(request):
 
 def new_blog(request):
     if request.method == "POST":
-        form = NewBlog(request.POST)
+        form = NewBlog(request.POST, request.FILES)
         if form.is_valid():
             blog_object = Blog()
             blog_object.blog_title = form.cleaned_data.get('blog_title')
@@ -62,6 +62,7 @@ def new_blog(request):
             blog_object.creation_date = datetime.now()
             blog_object.last_modified = datetime.now()
             blog_object.user_name = request.user
+            blog_object.blog_image = request.FILES['blog_image']
             blog_object.save()
             messages.success(request, "New blog created")
     else:
@@ -71,13 +72,14 @@ def new_blog(request):
 
 def blog(request, blog_id):
     if request.method == "POST":
-        form = NewBlog(request.POST)
+        form = NewBlog(request.POST, request.FILES)
         if form.is_valid():
             blog_object = Blog.objects.get(pk=blog_id)
             blog_object.blog_title = form.cleaned_data.get('blog_title')
             blog_object.blog_description = form.cleaned_data.get('blog_description')
             blog_object.blog_user_id = request.user
             blog_object.last_modified = datetime.now()
+            blog_object.blog_image = request.FILES['blog_image']
             blog_object.save()
             messages.success(request, "Blog updated successfully")
     else:

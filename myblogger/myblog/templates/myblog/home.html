@@ -23,7 +23,12 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="blog-post-thumb">
                         <div class="img">
-                            <img src="{% static 'myblog/images/blog-item-01.png' %}" alt="">
+                            {% if blog.blog_image %}
+                                <img src="{{ blog.blog_image.url }}" alt="">
+                            {% else %}
+                                <img src="{% static 'myblog/images/blog-item-01.png' %}" alt="">
+                            {% endif %}
+
                         </div>
                         <div class="blog-content">
                             <h3 class="text text-left">

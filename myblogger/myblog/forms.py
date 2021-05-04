@@ -17,9 +17,13 @@ class LoginUser(forms.Form):
 
 
 class NewBlog(forms.Form):
+    def __int__(self):
+        self.fields['blog_image'].required = False
+
     blog_title = forms.CharField(label="Form Title", max_length=250, widget=forms.TextInput(
         attrs={"class": "form-control", "placeholder": "Enter title here"}
     ))
     blog_description = forms.CharField(label="Blog Description", widget=forms.Textarea(
         attrs={"class": "form-control", "placeholder": "Enter blog Description"}
     ))
+    blog_image = forms.ImageField()

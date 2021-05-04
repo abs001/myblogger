@@ -14,9 +14,9 @@ class SiteConfiguration(models.Model):
 class Blog(models.Model):
     blog_title = models.CharField(max_length=200)
     blog_description = models.TextField()
-    blog_image = models.ImageField()  # Future scope
+    blog_image = models.ImageField(upload_to='blog_images', null=True, blank=True)  # Future scope
     blog_user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
     creation_date = models.DateTimeField()
     last_modified = models.DateTimeField()
-    views = models.IntegerField(default=0)
+    views = models.IntegerField(default=0, null=True, blank=True)
     user_name = models.TextField(default="Admin")

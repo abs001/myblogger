@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-md-12">
                 <div class="contact-form">
-                    <form id="login_user" method="POST">
+                    <form id="login_user" method="POST" enctype="multipart/form-data">
                       {% csrf_token %}
                       <div class="row">
                             {% for field in new_blog %}

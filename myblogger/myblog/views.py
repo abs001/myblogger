@@ -9,15 +9,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
-    blog_data = Blog.objects.all()
+    blog_data = Blog.objects.all().order_by('-last_modified')
     paginator_object = Paginator(blog_data, 6)
     page_data = paginator_object.get_page(request.GET.get('page', 1))
     return render(request, 'myblog/home.html', {"page_data": page_data})
 
 
 def profile(request, username=None):
-    blog_data = {"blog_data": Blog.objects.filter(user_name=username)}
-    return render(request, 'myblog/home.html', blog_data)
+    blog_data = Blog.objects.filter(user_name=username).order_by('-last_modified')
+    paginator_object = Paginator(blog_data, 6)
+    page_data = paginator_object.get_page(request.GET.get('page', 1))
+    return render(request, 'myblog/home.html', {"page_data": page_data})
 
 
 def register(request):

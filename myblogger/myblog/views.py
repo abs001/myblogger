@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from .forms import Register, LoginUser, NewBlog
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .models import Blog
+from .models import Blog, SiteConfiguration
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -12,14 +12,16 @@ def index(request):
     blog_data = Blog.objects.all().order_by('-last_modified')
     paginator_object = Paginator(blog_data, 6)
     page_data = paginator_object.get_page(request.GET.get('page', 1))
-    return render(request, 'myblog/home.html', {"page_data": page_data})
+    return render(request, 'myblog/home.html', {"page_data": page_data,
+                                                "site_conf": SiteConfiguration.objects.get(pk=1)})
 
 
 def profile(request, username=None):
     blog_data = Blog.objects.filter(user_name=username).order_by('-last_modified')
     paginator_object = Paginator(blog_data, 6)
     page_data = paginator_object.get_page(request.GET.get('page', 1))
-    return render(request, 'myblog/home.html', {"page_data": page_data})
+    return render(request, 'myblog/home.html', {"page_data": page_data,
+                                                "site_conf": SiteConfiguration.objects.get(pk=1)})
 
 
 def register(request):
@@ -31,7 +33,8 @@ def register(request):
             return redirect("login")
     else:
         form = Register()
-    return render(request, "myblog/register.html", {"registration_form": form})
+    return render(request, "myblog/register.html", {"registration_form": form,
+                                                    "site_conf": SiteConfiguration.objects.get(pk=1) })
 
 
 def login_user(request):
@@ -50,7 +53,8 @@ def login_user(request):
                 messages.add_message(request, messages.ERROR, "Invalid credentials!")
     else:
         form = LoginUser()
-    return render(request, "myblog/login.html", {"login_form": form})
+    return render(request, "myblog/login.html", {"login_form": form,
+                                                 "site_conf": SiteConfiguration.objects.get(pk=1)})
 
 
 def new_blog(request):
@@ -69,7 +73,8 @@ def new_blog(request):
             messages.success(request, "New blog created")
     else:
         form = NewBlog()
-    return render(request, "myblog/new_blog.html", {"new_blog": form})
+    return render(request, "myblog/new_blog.html", {"new_blog": form,
+                                                    "site_conf": SiteConfiguration.objects.get(pk=1)})
 
 
 def blog(request, blog_id):
@@ -91,6 +96,9 @@ def blog(request, blog_id):
             "blog_description": current_blog.blog_description,
             "last_modified": current_blog.last_modified
         }
+        current_blog.views = current_blog.views+1
+        current_blog.save()
         form = NewBlog(initial=init_dict)
 
-    return render(request, "myblog/blog.html", {"new_blog": form})
+    return render(request, "myblog/blog.html", {"new_blog": form,
+                                                "site_conf": SiteConfiguration.objects.get(pk=1)})

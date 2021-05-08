@@ -41,7 +41,8 @@
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
                         <a href="/" class="logo">
-                            <img src="{% static 'myblog/images/logo.png' %}" alt="Softy Pinko"/>
+                            <img src="{{ site_conf.site_logo.url }}" alt="{{ site_conf.site_name }}" width="60px" height="60px"/>
+                            <span class="font-weight-bold">&nbsp;&nbsp;{{ site_conf.site_name }}</span>
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
@@ -74,17 +75,21 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <ul class="social">
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-rss"></i></a></li>
-                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                        {% if site_conf.social_fb %}
+                            <li><a href="{{ site_conf.social_fb }}"><i class="fa fa-facebook"></i></a></li>
+                        {% endif %}
+                        {% if site_conf.social_tw %}
+                            <li><a href="{{ site_conf.social_tw }}"><i class="fa fa-twitter"></i></a></li>
+                        {% endif %}
+                        {% if site_conf.social_li %}
+                            <li><a href="{{ site_conf.social_li }}"><i class="fa fa-linkedin"></i></a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <p class="copyright">Copyright &copy; 2020 Softy Pinko Company - Design: TemplateMo</p>
+                    <p class="copyright">Copyright &copy; {% now "Y" %} {{ site_conf.site_name }}</p>
                 </div>
             </div>
         </div>

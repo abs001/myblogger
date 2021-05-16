@@ -3,9 +3,46 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from .forms import Register, LoginUser, NewBlog
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from .models import Blog, SiteConfiguration
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator
+from django.http import HttpResponse, JsonResponse
+from rest_framework.parsers import JSONParser
+from .serializer import BlogSerializer
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def get_blog_list(request):
+    blog_list = Blog.objects.all()
+    serializer = BlogSerializer(blog_list, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+@csrf_exempt
+def blog_detail(request, pk):
+    try:
+        single_blog = Blog.objects.get(pk=pk)
+    except Blog.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == "GET":
+        if pk:
+            serializer = BlogSerializer(single_blog)
+            return JsonResponse(serializer.data, safe=False)
+
+    if request.method == "PUT":
+        data = JSONParser().parse(request)
+        serializer = BlogSerializer(single_blog, data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    if request.method == "DELETE":
+        single_blog.delete()
+        return HttpResponse(status=204)
 
 
 def index(request):
@@ -34,7 +71,7 @@ def register(request):
     else:
         form = Register()
     return render(request, "myblog/register.html", {"registration_form": form,
-                                                    "site_conf": SiteConfiguration.objects.get(pk=1) })
+                                                    "site_conf": SiteConfiguration.objects.get(pk=1)})
 
 
 def login_user(request):
@@ -96,7 +133,7 @@ def blog(request, blog_id):
             "blog_description": current_blog.blog_description,
             "last_modified": current_blog.last_modified
         }
-        current_blog.views = current_blog.views+1
+        current_blog.views = current_blog.views + 1
         current_blog.save()
         form = NewBlog(initial=init_dict)
 
